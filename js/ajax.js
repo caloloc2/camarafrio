@@ -1,5 +1,5 @@
-var server = 'http://localhost/camarafrio/'; 
-// var server = 'http://aloja.vtgsa.com';
+// var server = 'http://localhost/camarafrio/'; 
+var server = 'http://camarafrio.nibemi.com/';
 
 function Consulta_Temperaturas(fields, callback){
     $.ajax({
