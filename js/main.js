@@ -43,7 +43,7 @@ $("#add_user").submit(e => {
     }
 
     Create(campos, 'usuarios', datos => {
-        // console.log(datos);
+        console.log(datos);
         if (datos.estado){
             document.getElementById('correo_create').value = ""
             document.getElementById('password_create').value = ""
