@@ -1,7 +1,55 @@
 console.log("Camara de Frio");
 
 $("#modal_usuarios").click(e => {
-    $("#usuarios").modal('show');
+    Buscar_Usuarios();
+})
+
+function Buscar_Usuarios(){
+    Consulta_Usuarios(datos => {
+        // console.log(datos);
+        if (datos.estado){
+            var items = ''
+            datos.consulta.forEach(element => {                
+                items += '<tr>';                
+                items += '<td>'+element.correo+'</td>';
+                items += '<td>'+element.clave+'</td>';
+                items += '<td><a href="#" onclick="Eliminar_Usuario('+element.id_usuario+'); return false;" class="btn btn-sm btn-info">Eliminar</a></td>';
+                items += '</tr>';
+            });
+            $("#lista_usuarios").html(items);
+            $("#usuarios").modal('show');
+        }
+    })  
+}
+
+function Eliminar_Usuario(id){
+    var campos = {
+        id_usuario: id
+    }
+    Delete(campos, 'usuarios', datos => {
+        // console.log(datos);
+        if (datos.estado){
+            Buscar_Usuarios();
+            alert("Usuario Eliminado")
+        }
+    })
+}
+
+$("#add_user").submit(e => {
+    e.preventDefault();
+    var campos = {
+        correo: document.getElementById('correo_create').value,
+        password: document.getElementById('password_create').value,
+    }
+
+    Create(campos, 'usuarios', datos => {
+        // console.log(datos);
+        if (datos.estado){
+            document.getElementById('correo_create').value = ""
+            document.getElementById('password_create').value = ""
+            Buscar_Usuarios();
+        }
+    })
 })
 
 $("#modal_reportes").click(e => {
@@ -13,6 +61,14 @@ $(document).ready(e => {
     document.getElementById("fecha_final").valueAsDate = new Date();
     document.getElementById("fecha_actual").valueAsDate = new Date();
     Buscar();
+
+    Check_Session(datos => {
+        // console.log(datos);
+        if (datos.session){
+            $("#correo_usuario").html(datos.user.correo)
+            $("#login").fadeOut();
+        }
+    })    
 })
 
 function Buscar(){
@@ -41,3 +97,59 @@ function Buscar(){
         })    
     }, 1000);    
 }
+
+$("#form_login").submit(e => {
+    e.preventDefault();
+
+    var campos = {
+        correo: document.getElementById('correo_login').value,
+        password: document.getElementById('password_login').value
+    }
+
+    Login(campos, datos => {
+        // console.log(datos);
+
+        if (datos.estado){
+            $("#correo_usuario").html(datos.consulta.correo)
+            $("#login").fadeOut();
+        }
+    })
+})
+
+$("#logout").click(e => {
+    Kill_Session(datos => {
+        // console.log(datos);
+        if (datos.estado){
+            document.getElementById('correo_login').value = ""
+            document.getElementById('password_login').value = ""
+            $("#correo_usuario").html("")
+            $("#login").fadeIn();
+        }
+    })
+})
+
+$("#envio_correo").click(e => {
+    const enviar_a = document.getElementById('correo_reporte').value
+    if (enviar_a != ""){
+        var campos = {
+            enviar_a,
+            fecha_inicio: document.getElementById("fecha_inicio").value,
+            fecha_final: document.getElementById("fecha_final").value,
+        }        
+        $("#reportes").modal('hide');
+        Create(campos, 'envio_email', datos => {
+            // console.log(datos);
+            alert("Correo enviado")            
+        })
+    }else{
+        alert("Debe especificar un correo");
+    }
+})
+
+$("#crear_pdf").click(e => {
+    var campos = {        
+        fecha_inicio: document.getElementById("fecha_inicio").value,
+        fecha_final: document.getElementById("fecha_final").value,
+    }
+    window.location.href = "php/pdf.php?fecha_inicio="+campos.fecha_inicio+"&fecha_final="+campos.fecha_final    
+})

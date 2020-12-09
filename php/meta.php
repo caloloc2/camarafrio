@@ -132,15 +132,15 @@ class Meta
      * @param $edad         nueva descripcion 
      * @return PDOStatement
      */
-    public static function Nuevo_Usuario($usuario, $correo, $clave)
+    public static function Nuevo_Usuario($correo, $clave)
     {        
         // Sentencia INSERT
-        $comando = "INSERT INTO usuarios (usuario, correo, clave) VALUES (?,?,?)";
+        $comando = "INSERT INTO usuarios (correo, clave) VALUES (?,?)";
 
         // Preparar la sentencia
         $sentencia = Database::getInstance()->getDb()->prepare($comando);
 
-        return $sentencia->execute(array($usuario, $correo, $clave));
+        return $sentencia->execute(array($correo, $clave));
 
     }  
 }

@@ -20,6 +20,42 @@ function Consulta_Temperaturas(fields, callback){
     });   
 }
 
+function Consulta_Usuarios(callback){
+    $.ajax({
+        url: server+'php/get_users.php',                
+		dataType: 'json',
+		success: function(datos){
+            if (typeof callback === "function") {
+                callback(datos);
+            }
+        },
+		error: function(e){
+			if (typeof callback === "function") {
+                callback(e);
+            }
+		}
+    });   
+}
+
+function Login(fields, callback){
+    $.ajax({
+        url: server+'php/login.php',
+        type: 'POST',
+        data: fields,
+		dataType: 'json',
+		success: function(datos){
+            if (typeof callback === "function") {
+                callback(datos);
+            }
+        },
+		error: function(e){
+			if (typeof callback === "function") {
+                callback(e);
+            }
+		}
+    });   
+}
+
 function Delete(fields, module, callback){
     $.ajax({
         url: server+'php/delete.php',
