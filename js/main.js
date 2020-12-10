@@ -90,8 +90,7 @@ $(document).ready(e => {
                 Umbral(datos => {
                     console.log(datos);
                 })
-            // }, 1000 * 60 * 5);
-            }, 1000 * 10);
+            }, 1000 * 60 * 5);            
         }
     })    
 })
