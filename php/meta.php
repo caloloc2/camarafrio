@@ -143,6 +143,26 @@ class Meta
         return $sentencia->execute(array($correo, $clave));
 
     }  
+
+    /**
+     * Insertar una nueva meta
+     *
+     * @param $id_test      identificador
+     * @param $nombre       nuevo titulo
+     * @param $edad         nueva descripcion 
+     * @return PDOStatement
+     */
+    public static function Correo_Notificacion($correo)
+    {        
+        // Sentencia INSERT
+        $comando = "INSERT INTO notificacion (correo) VALUES (?)";
+
+        // Preparar la sentencia
+        $sentencia = Database::getInstance()->getDb()->prepare($comando);
+
+        return $sentencia->execute(array($correo));
+
+    }  
 }
 
 

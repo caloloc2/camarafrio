@@ -52,6 +52,23 @@ $("#add_user").submit(e => {
     })
 })
 
+$("#correo_notificacion").submit(e => {
+    e.preventDefault();
+    var campos = {
+        correo: document.getElementById("correo_para_notificacion").value 
+    }
+
+    if (campos.correo!=''){
+        Update(campos, 'notificacion', datos => {
+            console.log(datos);
+            if (datos.estado){
+                alert("Correo electrónico actualizado.")
+                Correo_Notificacion();
+            }
+        })
+    }
+})
+
 $("#modal_reportes").click(e => {
     $("#reportes").modal('show');
 })
@@ -61,15 +78,32 @@ $(document).ready(e => {
     document.getElementById("fecha_final").valueAsDate = new Date();
     document.getElementById("fecha_actual").valueAsDate = new Date();
     Buscar();
+    Correo_Notificacion();
 
     Check_Session(datos => {
         // console.log(datos);
         if (datos.session){
             $("#correo_usuario").html(datos.user.correo)
             $("#login").fadeOut();
+
+            setInterval(() => {
+                Umbral(datos => {
+                    console.log(datos);
+                })
+            // }, 1000 * 60 * 5);
+            }, 1000 * 10);
         }
     })    
 })
+
+function Correo_Notificacion(){
+    Consulta_Notificacion(datos => {
+        console.log(datos);
+        if (datos.estado){
+            document.getElementById("correo_para_notificacion").value = datos.consulta.correo;
+        }        
+    })
+}
 
 function Buscar(){
     var campos = {

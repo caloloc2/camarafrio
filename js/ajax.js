@@ -1,5 +1,5 @@
-// var server = 'http://localhost/camarafrio/'; 
-var server = 'http://camaradefrio.nibemi.com/';
+var server = 'http://localhost/camarafrio/'; 
+// var server = 'http://camaradefrio.nibemi.com/';
 
 function Consulta_Temperaturas(fields, callback){
     $.ajax({
@@ -23,6 +23,40 @@ function Consulta_Temperaturas(fields, callback){
 function Consulta_Usuarios(callback){
     $.ajax({
         url: server+'php/get_users.php',                
+		dataType: 'json',
+		success: function(datos){
+            if (typeof callback === "function") {
+                callback(datos);
+            }
+        },
+		error: function(e){
+			if (typeof callback === "function") {
+                callback(e);
+            }
+		}
+    });   
+}
+
+function Consulta_Notificacion(callback){
+    $.ajax({
+        url: server+'php/get_notificacion.php',                
+		dataType: 'json',
+		success: function(datos){
+            if (typeof callback === "function") {
+                callback(datos);
+            }
+        },
+		error: function(e){
+			if (typeof callback === "function") {
+                callback(e);
+            }
+		}
+    });   
+}
+
+function Umbral(callback){
+    $.ajax({
+        url: server+'php/umbral.php',                
 		dataType: 'json',
 		success: function(datos){
             if (typeof callback === "function") {
